@@ -13,17 +13,19 @@ namespace EmployeesApp.Web.Controllers
         public IActionResult Index()
         {
             var model = service.GetAll();
-            var viewModel = new IndexVM {
+            var viewModel = new IndexVM
+            {
 
-                Employees = model.Select(b=> new IndexVM.EmployeeItemVM
+                Employees = model.Select(b => new IndexVM.EmployeeItemVM
                 {
                     Name = b.Name,
                     Id = b.Id,
-                    Email = b.Email
+                    Email = b.Email,
+                    ShowAsHighlighted = b.Email.Split("@")[0].Equals("admin", StringComparison.OrdinalIgnoreCase)
                 })
                 .ToArray()
             };
-            return View(model);
+            return View(viewModel);
         }
 
         [HttpGet("create")]
@@ -38,7 +40,8 @@ namespace EmployeesApp.Web.Controllers
             if (!ModelState.IsValid)
                 return View();
 
-            var employee = new Employee {
+            var employee = new Employee
+            {
 
                 Name = vm.Name,
                 Email = vm.Email
