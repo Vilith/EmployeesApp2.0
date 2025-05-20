@@ -51,7 +51,14 @@ namespace EmployeesApp.Web.Controllers
         public IActionResult Details(int id)
         {
             var model = service.GetById(id);
-            return View(model);
+
+            var vm = new DetailsVM {
+
+                Id = model.Id,
+                Name = model.Name,
+                Email = model.Email
+            };
+            return View(vm);
         }
     }
 }
