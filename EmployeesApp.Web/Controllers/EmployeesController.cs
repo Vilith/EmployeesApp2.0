@@ -1,6 +1,7 @@
 ﻿using EmployeesApp.Web.Models;
 using EmployeesApp.Web.Services;
 using Microsoft.AspNetCore.Mvc;
+using EmployeesApp.Web.Views.Employees;
 
 namespace EmployeesApp.Web.Controllers
 {
@@ -12,10 +13,16 @@ namespace EmployeesApp.Web.Controllers
         public IActionResult Index()
         {
             var model = service.GetAll();
+            var viewModel = new IndexVM {
 
-            //foreach (var emp in model)
-            //    Console.WriteLine($"{emp.Name}: {emp.Id}");
-
+                Employees = model.Select(b=> new IndexVM.EmployeeItemVM
+                {
+                    Name = b.Name,
+                    Id = b.Id,
+                    Email = b.Email
+                })
+                .ToArray()
+            };
             return View(model);
         }
 
@@ -26,11 +33,16 @@ namespace EmployeesApp.Web.Controllers
         }
 
         [HttpPost("create")]
-        public IActionResult Create(Employee employee)
+        public IActionResult Create(CreateVM vm)
         {
             if (!ModelState.IsValid)
                 return View();
 
+            var employee = new Employee {
+
+                Name = vm.Name,
+                Email = vm.Email
+            };
             service.Add(employee);
             return RedirectToAction(nameof(Index));
         }
