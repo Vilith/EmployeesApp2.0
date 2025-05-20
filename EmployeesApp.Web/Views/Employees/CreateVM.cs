@@ -16,7 +16,8 @@ namespace EmployeesApp.Web.Views.Employees
         public string Email { get; set; } = null!;
 
         [Display(Name = "What is 2 + 2?")]
-        [Range(4,4)]
+        [Range(4, 4, ErrorMessage = "Incorrect answer")]
+        [Required(ErrorMessage = "Please answer the overlord")]
         public int BotCheck { get; set; } = 4;
     }
 }
